@@ -14,6 +14,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ApiResource(
+ *  routePrefix="/aulaamas",
+ *  collectionOperations={"POST","GET"},
+ *  itemOperations={"PUT", "GET"},
  *  normalizationContext={"groups"={"User:read"}},
  *  denormalizationContext={"groups"={"User:write"}},
  * )
@@ -27,17 +30,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"User:read"})
      * @Groups({"Commande:read"})
      * @Groups({"Commande:write"})
+     * @Groups({"Depense:read"})
+     * @Groups({"Depense:write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=true)
      * @Groups({"User:write"})
+     * @Groups({"Depense:read"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"Depense:read"})
      */
     private $roles = [];
 
@@ -53,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"User:read"})
      * @Groups({"User:write"})
      * @Groups({"Commande:read"})
+     * @Groups({"Depense:read"})
      */
     private $prenom;
 
@@ -61,6 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"User:read"})
      * @Groups({"User:write"})
      * @Groups({"Commande:read"})
+     * @Groups({"Depense:read"})
      */
     private $nom;
 

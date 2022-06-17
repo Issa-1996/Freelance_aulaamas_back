@@ -10,7 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *  routePrefix="/aulaamas",
+ *  collectionOperations={"POST","GET"},
+ *  itemOperations={"PUT", "GET"},
+ *  normalizationContext={"groups"={"Depense:read"}},
+ *  denormalizationContext={"groups"={"Depense:write"}},
+ * )
  * @ORM\Entity(repositoryClass=DepenseRepository::class)
  */
 class Depense
@@ -19,37 +25,49 @@ class Depense
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"User:read"})
+     * @Groups({"Depense:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"Depense:read"})
+     * @Groups({"Depense:write"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Depense:read"})
+     * @Groups({"Depense:write"})
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"Depense:read"})
+     * @Groups({"Depense:write"})
      */
     private $prix;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Depense:read"})
+     * @Groups({"Depense:write"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"Depense:read"})
+     * @Groups({"Depense:write"})
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="depense")
+     * @Groups({"Depense:read"})
+     * @Groups({"Depense:write"})
      */
     private $user;
 
