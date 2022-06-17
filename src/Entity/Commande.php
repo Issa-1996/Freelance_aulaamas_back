@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CommandeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *  normalizationContext={"groups"={"Commande:read"}},
+ *  denormalizationContext={"groups"={"Commande:write"}},
+ * )
  * @ORM\Entity(repositoryClass=CommandeRepository::class)
  */
 class Commande
@@ -18,52 +22,82 @@ class Commande
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
      */
     private $numeroCommande;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
      */
     private $typeCommande;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
      */
     private $nomCommande;
 
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
      */
     private $avance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
      */
     private $relicat;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
      */
     private $dateCommande;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
      */
     private $prix;
 
     /**
      * @ORM\ManyToOne(targetEntity=Model::class, inversedBy="commandes",cascade={"persist"})
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
      */
     private $model;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commande",cascade={"persist"})
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
      */
     private $user;
     

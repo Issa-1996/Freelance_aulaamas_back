@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ModelRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ModelRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *  normalizationContext={"groups"={"Model:read"}},
+ *  denormalizationContext={"groups"={"Model:write"}},
+ * )
  * @ORM\Entity(repositoryClass=ModelRepository::class)
  */
 class Model
@@ -18,26 +22,47 @@ class Model
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"Model:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Model:read"})
+     * @Groups({"Model:write"})
+     * @Groups({"Commande:read"})
+     * @Groups({"User:read"})
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Model:read"})
+     * @Groups({"Model:write"})
+     * @Groups({"Commande:read"})
+     * @Groups({"User:read"})
      */
     private $prix;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Model:read"})
+     * @Groups({"Model:write"})
+     * @Groups({"Commande:read"})
+     * @Groups({"User:read"})
      */
     private $descriptionModel;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Model:read"})
+     * @Groups({"Model:write"})
+     * @Groups({"Commande:read"})
+     * @Groups({"User:read"})
      */
     private $images;
 
@@ -47,19 +72,22 @@ class Model
     private $commandes;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="model")
-     */
-    private $users;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Model:read"})
+     * @Groups({"Model:write"})
+     * @Groups({"Commande:read"})
+     * @Groups({"User:read"})
      */
     private $cathegorie;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="model")
+     */
+    private $user;
 
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,36 +173,6 @@ class Model
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setModel($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getModel() === $this) {
-                $user->setModel(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCathegorie(): ?string
     {
         return $this->cathegorie;
@@ -183,6 +181,18 @@ class Model
     public function setCathegorie(?string $cathegorie): self
     {
         $this->cathegorie = $cathegorie;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

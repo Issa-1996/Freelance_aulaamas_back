@@ -7,12 +7,16 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *  normalizationContext={"groups"={"User:read"}},
+ *  denormalizationContext={"groups"={"User:write"}},
+ * )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -20,11 +24,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"User:read"})
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=true)
+     * @Groups({"User:write"})
      */
     private $username;
 
@@ -36,108 +44,145 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"User:write"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
+     * @Groups({"Commande:read"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
+     * @Groups({"Commande:read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
+     * @Groups({"Commande:read"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $epaule;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $mancheClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $epauleClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $couClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $longueurBrasClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $longueurPantalonClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $cuisseClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $hancheClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $tourDeBrasClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $tourDeTailleClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $mancheProtrine;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $mancheProtrineClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $ceintureClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $typeDeTissuClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $tailleTissuClient;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $couleurTissuClient;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Model::class, inversedBy="users")
-     */
-    private $model;
 
     /**
      * @ORM\OneToMany(targetEntity=Depense::class, mappedBy="user")
@@ -146,23 +191,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="user")
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $commande;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $poignetMachetClient;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"User:read"})
+     * @Groups({"User:write"})
      */
     private $BrasClient;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Model::class, mappedBy="user")
+     */
+    private $model;
 
     public function __construct()
     {
         $this->depense = new ArrayCollection();
         $this->commande = new ArrayCollection();
+        $this->model = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -477,18 +534,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getModel(): ?Model
-    {
-        return $this->model;
-    }
-
-    public function setModel(?Model $model): self
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Depense>
      */
@@ -569,6 +614,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBrasClient(string $BrasClient): self
     {
         $this->BrasClient = $BrasClient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Model>
+     */
+    public function getModel(): Collection
+    {
+        return $this->model;
+    }
+
+    public function addModel(Model $model): self
+    {
+        if (!$this->model->contains($model)) {
+            $this->model[] = $model;
+            $model->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModel(Model $model): self
+    {
+        if ($this->model->removeElement($model)) {
+            // set the owning side to null (unless already changed)
+            if ($model->getUser() === $this) {
+                $model->setUser(null);
+            }
+        }
 
         return $this;
     }
