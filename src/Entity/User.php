@@ -9,6 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
@@ -20,7 +21,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  *  normalizationContext={"groups"={"User:read"}},
  *  denormalizationContext={"groups"={"User:write"}},
  * )
- */
+ * @UniqueEntity("telephone")
+ */   
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -74,7 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Groups({"User:read"})
      * @Groups({"User:write"})
      * @Groups({"Commande:read"})
@@ -213,7 +215,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $poignetMachetClient;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"User:read"})
      * @Groups({"User:write"})
      */
