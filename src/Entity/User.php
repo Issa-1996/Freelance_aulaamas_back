@@ -4,16 +4,19 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiFilter(SearchFilter::class, properties={"username":"exact"})
  * @ApiResource(
  *  routePrefix="/aulaamas",
  *  collectionOperations={"POST","GET"},
@@ -46,6 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"User:write"})
      * @Groups({"Depense:read"})
      */
     private $roles = [];
@@ -82,13 +86,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"Commande:read"})
      */
     private $telephone;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"User:read"})
-     * @Groups({"User:write"})
-     */
-    private $epaule;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -158,13 +155,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"User:read"})
      * @Groups({"User:write"})
      */
-    private $mancheProtrine;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"User:read"})
-     * @Groups({"User:write"})
-     */
     private $mancheProtrineClient;
 
     /**
@@ -173,27 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"User:write"})
      */
     private $ceintureClient;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"User:read"})
-     * @Groups({"User:write"})
-     */
-    private $typeDeTissuClient;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"User:read"})
-     * @Groups({"User:write"})
-     */
-    private $tailleTissuClient;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"User:read"})
-     * @Groups({"User:write"})
-     */
-    private $couleurTissuClient;
 
     /**
      * @ORM\OneToMany(targetEntity=Depense::class, mappedBy="user")
@@ -225,6 +194,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Model::class, mappedBy="user")
      */
     private $model;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $basClient;
 
     public function __construct()
     {
@@ -509,42 +483,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTypeDeTissuClient(): ?string
-    {
-        return $this->typeDeTissuClient;
-    }
-
-    public function setTypeDeTissuClient(?string $typeDeTissuClient): self
-    {
-        $this->typeDeTissuClient = $typeDeTissuClient;
-
-        return $this;
-    }
-
-    public function getTailleTissuClient(): ?string
-    {
-        return $this->tailleTissuClient;
-    }
-
-    public function setTailleTissuClient(?string $tailleTissuClient): self
-    {
-        $this->tailleTissuClient = $tailleTissuClient;
-
-        return $this;
-    }
-
-    public function getCouleurTissuClient(): ?string
-    {
-        return $this->couleurTissuClient;
-    }
-
-    public function setCouleurTissuClient(?string $couleurTissuClient): self
-    {
-        $this->couleurTissuClient = $couleurTissuClient;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Depense>
      */
@@ -655,6 +593,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $model->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBasClient(): ?string
+    {
+        return $this->basClient;
+    }
+
+    public function setBasClient(?string $basClient): self
+    {
+        $this->basClient = $basClient;
 
         return $this;
     }

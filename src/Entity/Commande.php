@@ -105,6 +105,30 @@ class Commande
      * @Groups({"Commande:write"})
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
+     */
+    private $typeDeTissuClient;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
+     */
+    private $tailleTissuClient;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"Commande:read"})
+     * @Groups({"Commande:write"})
+     * @Groups({"User:read"})
+     */
+    private $couleurTissuClient;
     
     public function getId(): ?int
     {
@@ -216,6 +240,42 @@ class Commande
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTypeDeTissuClient(): ?string
+    {
+        return $this->typeDeTissuClient;
+    }
+
+    public function setTypeDeTissuClient(?string $typeDeTissuClient): self
+    {
+        $this->typeDeTissuClient = $typeDeTissuClient;
+
+        return $this;
+    }
+
+    public function getTailleTissuClient(): ?string
+    {
+        return $this->tailleTissuClient;
+    }
+
+    public function setTailleTissuClient(?string $tailleTissuClient): self
+    {
+        $this->tailleTissuClient = $tailleTissuClient;
+
+        return $this;
+    }
+
+    public function getCouleurTissuClient(): ?string
+    {
+        return $this->couleurTissuClient;
+    }
+
+    public function setCouleurTissuClient(?string $couleurTissuClient): self
+    {
+        $this->couleurTissuClient = $couleurTissuClient;
 
         return $this;
     }

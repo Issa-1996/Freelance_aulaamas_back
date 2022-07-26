@@ -34,7 +34,7 @@ class Model
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      * @Groups({"Model:read"})
      * @Groups({"Model:write"})
      * @Groups({"Commande:read"})
