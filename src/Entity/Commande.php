@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
+ *  attributes={"pagination_items_per_page"=100000000},
  *  routePrefix="/aulaamas",
  *  collectionOperations={"POST","GET"},
  *  itemOperations={"PUT", "GET"},

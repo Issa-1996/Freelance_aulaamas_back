@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
+ *  attributes={"pagination_items_per_page"=100000000},
  *  routePrefix="/aulaamas",
  *  collectionOperations={"POST","GET"},
  *  itemOperations={"PUT", "GET"},

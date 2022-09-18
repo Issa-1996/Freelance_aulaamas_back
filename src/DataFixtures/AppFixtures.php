@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
         $client->setNom("Issa");
         $client->setCeintureClient("100");
         $client->setCouClient("200");
-        $client->setCouleurTissuClient("VERT");
+        // $client->setCouleurTissuClient("VERT");
         $client->setRoles(["ROLES_CLIENT"]);
 
 

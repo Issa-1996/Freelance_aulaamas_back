@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ApiFilter(SearchFilter::class, properties={"username":"exact"})
  * @ApiResource(
+ *  attributes={"pagination_items_per_page"=100000000},
  *  routePrefix="/aulaamas",
  *  collectionOperations={"POST","GET"},
  *  itemOperations={"PUT", "GET"},
